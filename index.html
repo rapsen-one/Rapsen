@@ -4,7 +4,7 @@
     <meta name="google-site-verification" content="xYmlnYNuR7OucIuWqckW8rJqJ4fvGAU4mCJZmUWaLFE" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapsan | Tanha</title>
+    <title>RAPSEN | Tanha</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -217,14 +217,16 @@
         .volume-control i:hover {
             color: #fff;
         }
-
     </style>
 </head>
-<body>
+<body
+    data-song-src="https://github.com/rapsen-one/Rapsen/sorena-gonjeshkaka.mp3"
+    data-song-artwork="https://raw.githubusercontent.com/rapsen-one/Rapsen/2c8b9260f48447c4c88094ef0a1c9138297d6aa3/IMG_20251002_182726_953.jpg"
+>
 
     <div class="player-card">
         <div id="player-artwork-container" class="artwork-container">
-            <img id="artwork" src="https://raw.githubusercontent.com/rapsen-one/Rapsen/2c8b9260f48447c4c88094ef0a1c9138297d6aa3/IMG_20251002_182726_953.jpg" alt="Artwork" class="artwork-img">
+            <img id="artwork" src="" alt="Artwork" class="artwork-img">
         </div>
 
         <div class="track-info">
@@ -263,14 +265,11 @@
             const volumeSlider = document.getElementById('volumeSlider');
             const volumeIcon = document.getElementById('volumeIcon');
 
-            // ===================================================================
-            // ## اطلاعات آهنگ را اینجا وارد کنید ##
-            //
-            // لینک مستقیم فایل mp3 و کاور آهنگ را در متغیرهای زیر قرار دهید.
-            // ===================================================================
+            // دریافت اطلاعات آهنگ از ویژگی‌های داده‌ای تگ body
+            const bodyElement = document.body;
             const song = {
-                src: "https://github.com/morteza-jamali/gemini-dep-rap-music-website-template/raw/main/music/sorena-gonjeshkaka.mp3", // !! لینک آهنگ خودتان را جایگزین کنید
-                artwork: "https://github.com/morteza-jamali/gemini-dep-rap-music-website-template/raw/main/images/default-artwork.png" // !! لینک کاور خودتان را جایگزین کنید
+                src: bodyElement.getAttribute('data-song-src'),
+                artwork: bodyElement.getAttribute('data-song-artwork')
             };
 
             let isPlaying = false;
@@ -361,5 +360,4 @@
         });
     </script>
 </body>
-              </html>
-              
+</html>
