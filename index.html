@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapsan | Tanha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* CSS Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #bb86fc;
+            --primary-glow: rgba(187, 134, 252, 0.3);
+            --surface-color: rgba(30, 30, 30, 0.65); /* Semi-transparent for glass effect */
+            --on-background-color: #ffffff;
+            --on-surface-color: #e1e1e1;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-radius: 15px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--on-background-color);
+            
+            /* --- Visual Flair: Animated Gradient Background --- */
+            background: linear-gradient(-45deg, #121212, #1a0b2e, #0c1a2e, #121212);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Music Player */
+        .player-card {
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+
+            /* --- Visual Flair: Glassmorphism Effect --- */
+            background: var(--surface-color);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), 0 0 25px var(--primary-glow);
+        }
+
+        .artwork-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 20px auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.4s ease;
+        }
+
+        .artwork-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .artwork-container.playing {
+            transform: scale(1.05); /* --- Visual Flair: Pop effect on play --- */
+        }
+        
+        .artwork-container.playing .artwork-img {
+            animation: rotateArtwork 25s linear infinite;
+        }
+
+        @keyframes rotateArtwork {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .track-info #songTitle {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .track-info #artistName {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-top: 5px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--primary-glow);
+            border: 2px solid #fff;
+        }
+        
+        .progress-bar:hover {
+            transform: scaleY(1.2);
+        }
+
+        .progress-container span {
+            font-size: 0.8rem;
+            color: #ccc;
+            min-width: 35px;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 10px;
+        }
+
+        .control-btn {
+            background: var(--primary-color);
+            border: none;
+            color: #000;
+            font-size: 1.8rem;
+            cursor: pointer;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+        
+        /* Volume Controls */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 80px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--on-surface-color);
+            border-radius: 50%;
+        }
+
+        .volume-control i {
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .volume-control i:hover {
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="player-card">
+        <div id="player-artwork-container" class="artwork-container">
+            <img id="artwork" src="" alt="Artwork" class="artwork-img">
+        </div>
+
+        <div class="track-info">
+            <h3 id="songTitle">Tanha</h3>
+            <p id="artistName">Rapsan</p>
+        </div>
+
+        <div class="progress-container">
+            <span id="currentTime">0:00</span>
+            <input type="range" id="progressBar" class="progress-bar" value="0" step="1" min="0">
+            <span id="duration">0:00</span>
+        </div>
+
+        <div class="controls">
+            <button id="playPauseBtn" class="control-btn"><i class="fas fa-play"></i></button>
+        </div>
+        
+        <div class="volume-control">
+            <i class="fas fa-volume-down" id="volumeIcon"></i>
+            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.75">
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const audioPlayer = document.getElementById('audioPlayer');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const progressBar = document.getElementById('progressBar');
+            const currentTimeEl = document.getElementById('currentTime');
+            const durationEl = document.getElementById('duration');
+            const artworkEl = document.getElementById('artwork');
+            const artworkContainer = document.getElementById('player-artwork-container');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeIcon = document.getElementById('volumeIcon');
+
+            // ===================================================================
+            // ## اطلاعات آهنگ را اینجا وارد کنید ##
+            //
+            // لینک مستقیم فایل mp3 و کاور آهنگ را در متغیرهای زیر قرار دهید.
+            // ===================================================================
+            const song = {
+                src: "https://github.com/morteza-jamali/gemini-dep-rap-music-website-template/raw/main/music/sorena-gonjeshkaka.mp3", // !! لینک آهنگ خودتان را جایگزین کنید
+                artwork: "https://github.com/morteza-jamali/gemini-dep-rap-music-website-template/raw/main/images/default-artwork.png" // !! لینک کاور خودتان را جایگزین کنید
+            };
+
+            let isPlaying = false;
+
+            // --- Functions ---
+
+            function loadSong() {
+                audioPlayer.src = song.src;
+                artworkEl.src = song.artwork;
+                audioPlayer.addEventListener('loadedmetadata', () => {
+                    progressBar.max = audioPlayer.duration;
+                    durationEl.textContent = formatTime(audioPlayer.duration);
+                });
+            }
+
+            function playSong() {
+                isPlaying = true;
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                artworkContainer.classList.add('playing');
+                audioPlayer.play();
+            }
+
+            function pauseSong() {
+                isPlaying = false;
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                artworkContainer.classList.remove('playing');
+                audioPlayer.pause();
+            }
+
+            function playPauseToggle() {
+                isPlaying ? pauseSong() : playSong();
+            }
+
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            function updateVolumeIcon(volume) {
+                volumeIcon.className = 'fas';
+                if (volume > 0.5) {
+                    volumeIcon.classList.add('fa-volume-up');
+                } else if (volume > 0) {
+                    volumeIcon.classList.add('fa-volume-down');
+                } else {
+                    volumeIcon.classList.add('fa-volume-mute');
+                }
+            }
+
+            // --- Event Listeners ---
+
+            playPauseBtn.addEventListener('click', playPauseToggle);
+
+            audioPlayer.addEventListener('timeupdate', () => {
+                progressBar.value = audioPlayer.currentTime;
+                currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+            });
+            
+            audioPlayer.addEventListener('ended', () => {
+                pauseSong();
+                audioPlayer.currentTime = 0;
+            });
+
+            progressBar.addEventListener('input', () => {
+                audioPlayer.currentTime = progressBar.value;
+            });
+
+            volumeSlider.addEventListener('input', (e) => {
+                audioPlayer.volume = e.target.value;
+                updateVolumeIcon(e.target.value);
+            });
+            
+            volumeIcon.addEventListener('click', () => {
+                 audioPlayer.muted = !audioPlayer.muted;
+                volumeSlider.value = audioPlayer.muted ? 0 : audioPlayer.volume;
+                updateVolumeIcon(volumeSlider.value);
+            });
+
+            // --- Initial Setup ---
+            function initialize() {
+                loadSong();
+                audioPlayer.volume = volumeSlider.value;
+                updateVolumeIcon(audioPlayer.volume);
+            }
+
+            initialize();
+        });
+    </script>
+</body>
+              </html>
+              
